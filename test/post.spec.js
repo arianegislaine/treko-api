@@ -38,7 +38,7 @@ describe('post', () => {
         })
 
         it("e deve enviar email", (done) => {
-            const payload = { vhost: "/", name: "tasksdev", truncate: "50000", ackmode: "ack_requeue_true", encoding: "auto", count: "1000" }
+            let payload = { vhost: "/", name: "tasksdev", truncate: "50000", ackmode: "ack_requeue_true", encoding: "auto", count: "1000" }
 
             rabbit
                 .post("/api/queues/%2f/tasksdev/get")
@@ -84,7 +84,7 @@ describe('post', () => {
 
     context('quando a tarefa já existe', () => {
 
-        const task = { title: 'Planejar viagem para a China', owner: 'eu@papito.io', done: false }
+        let task = { title: 'Planejar viagem para a China', owner: 'eu@papito.io', done: false }
 
         before((done) => {
             request
@@ -102,7 +102,7 @@ describe('post', () => {
                 .send(task)
                 .end((err, res) => {
                     expect(res).to.has.status(409)
-                    expect(res.body.name).to.include('MongoError')
+                    expect(res.body.msg).to.include('Error while trying to save the document')
                     done()
                 })
         })
